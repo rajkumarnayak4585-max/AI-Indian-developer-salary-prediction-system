@@ -1,0 +1,602 @@
+
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI भारतीय डेवलपर सैलरी प्रेडिक्टर</title>
+
+<style>
+:root {
+  --bg: #08111f;
+  --card: #111e31;
+  --text: #f3f7ff;
+  --muted: #a9b8ce;
+  --blue: #54a6ff;
+  --green: #41e0ad;
+  --border: #293b53;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: Arial, "Noto Sans Devanagari", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+}
+header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #08111fee;
+  border-bottom: 1px solid var(--border);
+  padding: 14px 6%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+}
+.logo { font-weight: 800; font-size: 19px; }
+.logo span { color: var(--green); }
+nav { display: flex; gap: 18px; flex-wrap: wrap; }
+nav a { color: var(--muted); text-decoration: none; font-size: 14px; }
+nav a:hover { color: var(--green); }
+.hero {
+  padding: 65px 6% 45px;
+  text-align: center;
+  background:
+    radial-gradient(ellipse at top, #17416a66, transparent 65%);
+}
+.tag {
+  display: inline-block;
+  padding: 7px 14px;
+  border: 1px solid #315c79;
+  border-radius: 30px;
+  color: var(--green);
+  background: #102a3a;
+  font-size: 13px;
+}
+h1 {
+  font-size: clamp(30px, 5vw, 53px);
+  line-height: 1.2;
+  margin: 22px auto;
+  max-width: 850px;
+}
+h1 span { color: var(--green); }
+.hero p { max-width: 680px; margin: auto; color: var(--muted); }
+.container { width: 90%; max-width: 1120px; margin: 35px auto; }
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin-top: 35px;
+}
+.stat, .card, .result-card, .info-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 17px;
+  padding: 22px;
+}
+.stat strong { display: block; color: var(--green); font-size: 24px; }
+.stat small { color: var(--muted); }
+.section-title { font-size: 27px; margin-bottom: 8px; }
+.section-desc { color: var(--muted); margin-top: 0; }
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+  align-items: start;
+}
+label { display: block; margin: 15px 0 7px; font-weight: 600; }
+input, select {
+  width: 100%;
+  padding: 13px;
+  border: 1px solid #344963;
+  border-radius: 9px;
+  background: #091526;
+  color: white;
+  font-size: 15px;
+  outline: none;
+}
+input:focus, select:focus { border-color: var(--green); }
+button {
+  cursor: pointer;
+  border: 0;
+  padding: 13px 19px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: bold;
+}
+.primary {
+  background: linear-gradient(100deg, #42e5b0, #62bcff);
+  color: #06131d;
+}
+.primary:hover { opacity: .9; }
+.full { width: 100%; margin-top: 22px; }
+.secondary { background: #223650; color: white; }
+.note { color: var(--muted); font-size: 12px; }
+.result-card { min-height: 300px; }
+.result-placeholder { text-align: center; padding: 45px 10px; }
+.result-placeholder .emoji { font-size: 55px; }
+.salary { font-size: clamp(27px, 4vw, 38px); color: var(--green); font-weight: 800; }
+.result-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 20px 0;
+}
+.mini {
+  padding: 13px;
+  background: #091526;
+  border-radius: 10px;
+}
+.mini small { color: var(--muted); display: block; }
+.mini strong { font-size: 17px; }
+.bar-row { margin: 17px 0; }
+.bar-label { display: flex; justify-content: space-between; gap: 8px; font-size: 13px; }
+.bar {
+  background: #25374d;
+  height: 9px;
+  border-radius: 20px;
+  overflow: hidden;
+  margin-top: 7px;
+}
+.bar div {
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, #43e3ae, #54a6ff);
+  border-radius: 20px;
+  transition: width .5s;
+}
+.history-item {
+  border-bottom: 1px solid var(--border);
+  padding: 12px 0;
+  font-size: 14px;
+}
+.features {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 20px;
+}
+.feature-icon { font-size: 30px; }
+.feature p, .info-card p { color: var(--muted); font-size: 14px; }
+.city-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 13px;
+  margin-top: 18px;
+}
+.city {
+  padding: 17px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--card);
+}
+.city strong { display: block; }
+.city small { color: var(--muted); }
+.disclaimer {
+  border-left: 4px solid #f2bd55;
+  padding: 12px 15px;
+  background: #392d172d;
+  color: #e7d4a6;
+  font-size: 13px;
+  border-radius: 5px;
+  margin-top: 18px;
+}
+footer {
+  text-align: center;
+  padding: 30px 15px;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 13px;
+}
+footer strong { color: var(--green); }
+.hidden { display: none; }
+
+@media(max-width: 760px) {
+  header { flex-direction: column; }
+  nav { justify-content: center; gap: 13px; }
+  .layout { grid-template-columns: 1fr; }
+  .stats, .features { grid-template-columns: 1fr; }
+  .city-grid { grid-template-columns: 1fr 1fr; }
+  .hero { padding-top: 45px; }
+}
+@media(max-width: 380px) {
+  .city-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">🇮🇳 भारत<span>AI</span> वेतन</div>
+  <nav>
+    <a href="#home">होम</a>
+    <a href="#predictor">सैलरी प्रेडिक्टर</a>
+    <a href="#cities">शहर</a>
+    <a href="#about">हमारे बारे में</a>
+  </nav>
+</header>
+
+<section class="hero" id="home">
+  <span class="tag">🤖 स्मार्ट सैलरी अनुमान प्रणाली</span>
+  <h1>भारत में अपनी भविष्य की<br>
+    <span>सैलरी का अनुमान लगाएँ</span>
+  </h1>
+  <p>
+    अपनी टेक्नोलॉजी, अनुभव, शहर और नौकरी का प्रकार चुनें।
+    यह वेबसाइट आपको भारतीय रुपये में अनुमानित वार्षिक और मासिक
+    सैलरी दिखाएगी।
+  </p>
+
+  <div class="stats">
+    <div class="stat">
+      <strong>₹ में</strong>
+      <small>भारतीय वेतन अनुमान</small>
+    </div>
+    <div class="stat">
+      <strong>10+</strong>
+      <small>डेवलपर भूमिकाएँ</small>
+    </div>
+    <div class="stat">
+      <strong>100%</strong>
+      <small>हिंदी इंटरफेस</small>
+    </div>
+  </div>
+</section>
+
+<main class="container" id="predictor">
+  <h2 class="section-title">💰 सैलरी प्रेडिक्शन कैलकुलेटर</h2>
+  <p class="section-desc">
+    नीचे अपनी जानकारी भरें और अनुमान देखने के लिए बटन दबाएँ।
+  </p>
+
+  <div class="layout">
+    <section class="card">
+      <h3>अपनी जानकारी भरें</h3>
+
+      <form id="salaryForm">
+        <label for="role">डेवलपर का प्रकार</label>
+        <select id="role" required>
+          <option value="web">वेब डेवलपर</option>
+          <option value="frontend">फ्रंटएंड डेवलपर</option>
+          <option value="backend">बैकएंड डेवलपर</option>
+          <option value="fullstack">फुल स्टैक डेवलपर</option>
+          <option value="python">पाइथन डेवलपर</option>
+          <option value="java">जावा डेवलपर</option>
+          <option value="ai">AI / मशीन लर्निंग इंजीनियर</option>
+          <option value="data">डेटा साइंटिस्ट</option>
+          <option value="mobile">मोबाइल ऐप डेवलपर</option>
+          <option value="cyber">साइबर सिक्योरिटी विशेषज्ञ</option>
+        </select>
+
+        <label for="city">काम करने का शहर</label>
+        <select id="city" required>
+          <option value="bangalore">बेंगलुरु</option>
+          <option value="delhi">दिल्ली / NCR</option>
+          <option value="mumbai">मुंबई</option>
+          <option value="hyderabad">हैदराबाद</option>
+          <option value="pune">पुणे</option>
+          <option value="chennai">चेन्नई</option>
+          <option value="kolkata">कोलकाता</option>
+          <option value="indore">इंदौर</option>
+          <option value="bhopal">भोपाल</option>
+          <option value="other">अन्य शहर / छोटा शहर</option>
+        </select>
+
+        <label for="experience">काम का अनुभव (वर्ष)</label>
+        <select id="experience" required>
+          <option value="0">0 वर्ष — शुरुआती</option>
+          <option value="1">1 वर्ष</option>
+          <option value="2">2 वर्ष</option>
+          <option value="3">3 वर्ष</option>
+          <option value="5">4–6 वर्ष</option>
+          <option value="8">7–10 वर्ष</option>
+          <option value="12">10+ वर्ष</option>
+        </select>
+
+        <label for="education">शिक्षा / योग्यता</label>
+        <select id="education">
+          <option value="school">स्कूल / शुरुआती सीखने वाला</option>
+          <option value="diploma">डिप्लोमा</option>
+          <option value="bachelor">ग्रेजुएशन / B.Tech / BCA</option>
+          <option value="master">मास्टर्स / MCA / M.Tech</option>
+          <option value="self">सेल्फ-लर्नर / अन्य</option>
+        </select>
+
+        <label for="skills">प्रोग्रामिंग स्किल का स्तर</label>
+        <select id="skills">
+          <option value="beginner">शुरुआती</option>
+          <option value="intermediate">मध्यम स्तर</option>
+          <option value="advanced">एडवांस स्तर</option>
+        </select>
+
+        <label for="job">नौकरी का प्रकार</label>
+        <select id="job">
+          <option value="office">ऑफिस / ऑन-साइट</option>
+          <option value="remote">रिमोट / घर से काम</option>
+          <option value="freelance">फ्रीलांसिंग</option>
+        </select>
+
+        <button class="primary full" type="submit">
+          🤖 सैलरी का अनुमान निकालें
+        </button>
+        <p class="note">
+          यह शैक्षिक मॉडल है, लाइव नौकरी बाजार से जुड़ा हुआ नहीं।
+        </p>
+      </form>
+    </section>
+
+    <section class="result-card" aria-live="polite">
+      <div id="emptyResult" class="result-placeholder">
+        <div class="emoji">📊</div>
+        <h3>आपका रिजल्ट यहाँ दिखेगा</h3>
+        <p class="section-desc">
+          अपनी जानकारी भरकर अनुमान प्राप्त करें।
+        </p>
+      </div>
+
+      <div id="result" class="hidden">
+        <span class="tag">आपका अनुमानित रिजल्ट</span>
+        <h3 id="resultRole">डेवलपर</h3>
+        <p class="section-desc">अनुमानित वार्षिक सैलरी</p>
+        <div class="salary" id="salaryRange">₹0 – ₹0</div>
+        <p id="monthly" class="section-desc"></p>
+
+        <div class="result-grid">
+          <div class="mini">
+            <small>अनुमानित औसत</small>
+            <strong id="average">₹0</strong>
+          </div>
+          <div class="mini">
+            <small>चयनित शहर</small>
+            <strong id="resultCity">भारत</strong>
+          </div>
+          <div class="mini">
+            <small>अनुभव</small>
+            <strong id="resultExperience">0 वर्ष</strong>
+          </div>
+          <div class="mini">
+            <small>नौकरी का प्रकार</small>
+            <strong id="resultJob">ऑफिस</strong>
+          </div>
+        </div>
+
+        <h4>📈 सैलरी तुलना</h4>
+        <div id="bars"></div>
+
+        <p class="note">
+          सैलरी CTC का अनुमान है। बोनस, टैक्स, कंपनी और वास्तविक ऑफर
+          के कारण अंतर हो सकता है।
+        </p>
+
+        <button type="button" class="secondary" id="downloadBtn">
+          📄 रिपोर्ट डाउनलोड करें
+        </button>
+      </div>
+    </section>
+  </div>
+
+  <div class="disclaimer">
+    ⚠️ महत्वपूर्ण: ये उदाहरण आधारित अनुमान हैं, सत्यापित लाइव वेतन आँकड़े
+    नहीं। वास्तविक सैलरी कंपनी, कौशल, इंटरव्यू, अनुभव और नौकरी के बाजार
+    पर निर्भर करती है। स्कूल के विद्यार्थी के लिए यह करियर सीखने का डेमो है।
+  </div>
+</main>
+
+<section class="container" id="cities">
+  <h2 class="section-title">🏙️ भारत के टेक्नोलॉजी शहर</h2>
+  <p class="section-desc">
+    अलग-अलग शहरों में वेतन और रहने का खर्च अलग हो सकता है।
+  </p>
+  <div class="city-grid">
+    <div class="city">💻 <strong>बेंगलुरु</strong><small>टेक और स्टार्टअप</small></div>
+    <div class="city">🏢 <strong>हैदराबाद</strong><small>IT और सॉफ्टवेयर</small></div>
+    <div class="city">🌆 <strong>पुणे</strong><small>IT और इंजीनियरिंग</small></div>
+    <div class="city">🚀 <strong>दिल्ली / NCR</strong><small>टेक कंपनियाँ</small></div>
+    <div class="city">📱 <strong>मुंबई</strong><small>टेक और फिनटेक</small></div>
+    <div class="city">🌐 <strong>चेन्नई</strong><small>सॉफ्टवेयर सेवाएँ</small></div>
+  </div>
+</section>
+
+<section class="container" id="about">
+  <h2 class="section-title">✨ इस वेबसाइट की विशेषताएँ</h2>
+  <div class="features">
+    <div class="info-card">
+      <div class="feature-icon">🤖</div>
+      <h3>स्मार्ट अनुमान</h3>
+      <p>भूमिका, अनुभव, कौशल और शहर के आधार पर नियमों से वेतन का अनुमान।</p>
+    </div>
+    <div class="info-card">
+      <div class="feature-icon">📊</div>
+      <h3>ग्राफ और रिपोर्ट</h3>
+      <p>शुरुआती वेतन, अनुभव के साथ अनुमान और रिपोर्ट डाउनलोड की सुविधा।</p>
+    </div>
+    <div class="info-card">
+      <div class="feature-icon">🇮🇳</div>
+      <h3>भारतीय उपयोगकर्ताओं के लिए</h3>
+      <p>रुपये में वेतन, भारतीय शहर और हिंदी भाषा का इंटरफेस।</p>
+    </div>
+  </div>
+
+  <div class="info-card" style="margin-top:20px">
+    <h3>👨‍🎓 प्रोजेक्ट निर्माता</h3>
+    <p><strong style="color:white">नाम:</strong> Raj Kumar Nayak</p>
+    <p><strong style="color:white">कक्षा:</strong> 9वीं</p>
+    <p><strong style="color:white">प्रोजेक्ट:</strong> AI Indian Developer Salary Prediction System</p>
+    <p>सीखें, प्रयोग करें और नई टेक्नोलॉजी बनाएँ!</p>
+  </div>
+</section>
+
+<footer>
+  <p>🇮🇳 भारतAI वेतन प्रेडिक्टर</p>
+  <p>शैक्षिक प्रोजेक्ट · <strong>Raj Kumar Nayak · Class 9th</strong></p>
+  <p>© <span id="year"></span> · केवल अनुमान, वास्तविक वेतन की गारंटी नहीं</p>
+</footer>
+
+<script>
+const roleData = {
+  web:       { name: "वेब डेवलपर", min: 240000, max: 600000 },
+  frontend:  { name: "फ्रंटएंड डेवलपर", min: 300000, max: 750000 },
+  backend:   { name: "बैकएंड डेवलपर", min: 350000, max: 850000 },
+  fullstack: { name: "फुल स्टैक डेवलपर", min: 350000, max: 900000 },
+  python:    { name: "पाइथन डेवलपर", min: 300000, max: 800000 },
+  java:      { name: "जावा डेवलपर", min: 350000, max: 850000 },
+  ai:        { name: "AI / मशीन लर्निंग इंजीनियर", min: 450000, max: 1200000 },
+  data:      { name: "डेटा साइंटिस्ट", min: 400000, max: 1100000 },
+  mobile:    { name: "मोबाइल ऐप डेवलपर", min: 300000, max: 800000 },
+  cyber:     { name: "साइबर सिक्योरिटी विशेषज्ञ", min: 350000, max: 900000 }
+};
+
+const cityData = {
+  bangalore: { name: "बेंगलुरु", factor: 1.18 },
+  delhi:     { name: "दिल्ली / NCR", factor: 1.12 },
+  mumbai:    { name: "मुंबई", factor: 1.15 },
+  hyderabad: { name: "हैदराबाद", factor: 1.10 },
+  pune:      { name: "पुणे", factor: 1.06 },
+  chennai:   { name: "चेन्नई", factor: 1.04 },
+  kolkata:   { name: "कोलकाता", factor: 0.88 },
+  indore:    { name: "इंदौर", factor: 0.86 },
+  bhopal:    { name: "भोपाल", factor: 0.82 },
+  other:     { name: "अन्य शहर", factor: 0.85 }
+};
+
+const experienceData = {
+  0: 1,
+  1: 1.13,
+  2: 1.28,
+  3: 1.48,
+  5: 1.85,
+  8: 2.35,
+  12: 2.90
+};
+
+const educationData = {
+  school: 0.90,
+  diploma: 1,
+  bachelor: 1.05,
+  master: 1.08,
+  self: 1
+};
+
+const skillData = {
+  beginner: 0.78,
+  intermediate: 1,
+  advanced: 1.25
+};
+
+const jobData = {
+  office: { name: "ऑफिस", factor: 1 },
+  remote: { name: "रिमोट", factor: 1.05 },
+  freelance: { name: "फ्रीलांस", factor: 0.90 }
+};
+
+const money = value =>
+  "₹" + Math.round(value).toLocaleString("en-IN");
+
+let latestReport = "";
+
+document.getElementById("year").textContent = new Date().getFullYear();
+
+document.getElementById("salaryForm").addEventListener("submit", function(event) {
+  event.preventDefault();
+
+  const role = roleData[document.getElementById("role").value];
+  const city = cityData[document.getElementById("city").value];
+  const expKey = document.getElementById("experience").value;
+  const expFactor = experienceData[expKey];
+  const education = educationData[document.getElementById("education").value];
+  const skill = skillData[document.getElementById("skills").value];
+  const job = jobData[document.getElementById("job").value];
+
+  const factor = city.factor * expFactor * education * skill * job.factor;
+
+  const minSalary = role.min * factor;
+  const maxSalary = role.max * factor;
+  const avgSalary = (minSalary + maxSalary) / 2;
+
+  document.getElementById("emptyResult").classList.add("hidden");
+  document.getElementById("result").classList.remove("hidden");
+
+  document.getElementById("resultRole").textContent = role.name;
+  document.getElementById("salaryRange").textContent =
+    money(minSalary) + " – " + money(maxSalary);
+
+  document.getElementById("monthly").textContent =
+    "मासिक अनुमान: " + money(minSalary / 12) + " – " +
+    money(maxSalary / 12);
+
+  document.getElementById("average").textContent = money(avgSalary);
+  document.getElementById("resultCity").textContent = city.name;
+  document.getElementById("resultExperience").textContent =
+    expKey === "5" ? "4–6 वर्ष" :
+    expKey === "8" ? "7–10 वर्ष" :
+    expKey === "12" ? "10+ वर्ष" : expKey + " वर्ष";
+
+  document.getElementById("resultJob").textContent = job.name;
+
+  // तुलना के लिए अनुमानित शुरुआती वेतन
+  const comparisons = [
+    { name: "शुरुआती स्तर", value: role.min * city.factor * skill },
+    { name: "आपका अनुमानित औसत", value: avgSalary },
+    { name: "अनुभव के साथ अनुमान", value: role.max * city.factor * expFactor * skill }
+  ];
+
+  const maxBar = Math.max(...comparisons.map(item => item.value));
+  document.getElementById("bars").innerHTML = comparisons.map(item => `
+    <div class="bar-row">
+      <div class="bar-label">
+        <span>${item.name}</span>
+        <strong>${money(item.value)}</strong>
+      </div>
+      <div class="bar">
+        <div style="width:${Math.min(100, item.value / maxBar * 100)}%"></div>
+      </div>
+    </div>
+  `).join("");
+
+  latestReport =
+`AI भारतीय डेवलपर सैलरी प्रेडिक्शन रिपोर्ट
+
+प्रोजेक्ट निर्माता: Raj Kumar Nayak
+कक्षा: 9वीं
+
+डेवलपर भूमिका: ${role.name}
+शहर: ${city.name}
+अनुभव: ${document.getElementById("resultExperience").textContent}
+नौकरी: ${job.name}
+
+अनुमानित वार्षिक सैलरी: ${money(minSalary)} से ${money(maxSalary)}
+अनुमानित मासिक सैलरी: ${money(minSalary / 12)} से ${money(maxSalary / 12)}
+अनुमानित औसत वार्षिक सैलरी: ${money(avgSalary)}
+
+महत्वपूर्ण: यह नियम-आधारित शैक्षिक अनुमान है, लाइव बाजार का डेटा नहीं।
+वास्तविक वेतन अलग हो सकता है।`;
+
+  document.getElementById("result").scrollIntoView({
+    behavior: "smooth",
+    block: "nearest"
+  });
+});
+
+document.getElementById("downloadBtn").addEventListener("click", function() {
+  if (!latestReport) return;
+
+  const blob = new Blob(["\uFEFF" + latestReport], {
+    type: "text/plain;charset=utf-8"
+  });
+
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "Raj-Kumar-Nayak-Salary-Report.txt";
+  a.click();
+  URL.revokeObjectURL(url);
+});
+</script>
+
+</body>
+</html>
